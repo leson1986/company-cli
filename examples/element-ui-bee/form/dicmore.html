@@ -1,0 +1,283 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <!-- <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script> -->
+  <link rel="stylesheet" href="../../../lib/cdn/element-ui/2.11.1/theme-chalk/index.css" />
+  <script src="../../../lib/cdn/element-ui/2.11.1/index.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-form v-model="data" ref="form" :option="option" @submit="submit"></avue-form>
+  </div>
+</body>
+<script>
+  let baseUrl = 'https://cli2.avuejs.com/api/area'
+  var DIC = {
+      VAILD: [{
+        name: '真',
+        code: 'true'
+      }, {
+        name: '假',
+        code: 'false'
+      }],
+      SEX: [{
+        name: '男',
+        code: 0
+      }, {
+        name: '女',
+          code: 1
+      }]
+  }
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        data: {},
+        option: {
+          props: {
+            label: 'name',
+            value: 'code'
+          },
+          column: [
+            
+            {
+              label: '姓名',
+              specialSel: false,
+              prop: 'name',
+            }, 
+            {
+                label: "类型",
+                prop: "type",
+                type: 'select',
+                dataType: 'number',
+                dicData: [{
+                  name: '选项1',
+                  code: 0
+                }, {
+                  name: '选项2',
+                  code: 1
+                }]
+            },
+            {
+                label: "权限",
+                prop: "grade",
+                type: "select",
+                dicData: DIC.SEX
+            },
+            {
+              label: '省份',
+              prop: 'province',
+              type: 'select',
+              specialSel: true,
+              cascaderItem: ['city','area'],
+              dicUrl: `${baseUrl}/getProvince`,
+              dicData: 'province',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择省份',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+                label: '城市',
+                prop: 'city',
+                type: 'select',
+                specialSel: true,
+                dicUrl: `${baseUrl}/getCity/{{key}}`,
+                dicData: 'city',
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择城市',
+                    trigger: 'blur'
+                  }
+                ]
+              },
+            {
+              label: '地区',
+              prop: 'area',
+              specialSel: true,
+              type: 'select',
+              dicUrl: `${baseUrl}/getArea/{{key1}}`,
+              dicData: 'area',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择地区',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '姓名1',
+              specialSel: false,
+              prop: 'name1',
+            },
+            {
+              label: '省份2',
+              prop: 'pp',
+              type: 'select',
+              specialSel: true,
+              cascaderItem: ['cc', 'aa', 'qq'],
+              dicUrl: `${baseUrl}/getProvince`,
+              dicData: 'pp',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择省份',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+                label: '城市2',
+                prop: 'cc',
+                type: 'select',
+                dicFlag: false,
+                hide: true,
+                specialSel: true,
+                dicUrl: `${baseUrl}/getCity/{{key}}`,
+                dicData: 'cc',
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择城市',
+                    trigger: 'blur'
+                  }
+                ]
+              },
+            {
+              label: '地区2',
+              prop: 'aa',
+              dicFlag: false,
+              hide: true,
+              specialSel: true,
+              type: 'select',
+              dicUrl: `${baseUrl}/getArea/{{key1}}`,
+              dicData: 'aa',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择地区',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '区2',
+              prop: 'qq',
+              dicFlag: false,
+              hide: true,
+              specialSel: true,
+              type: 'select',
+              dicUrl: `${baseUrl}/getArea/{{key1}}`,
+              dicData: 'qq',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择地区',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '省份3',
+              prop: 'province3',
+              type: 'select',
+              filterable: true, // 支持搜索
+              specialSel: false,
+              cascaderItem: ['city3', 'area3'],
+              dicUrl: `${baseUrl}/getProvince`,
+              dicData: 'province3',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择省份',
+                  trigger: 'change'
+                }
+              ]
+            },
+            {
+                label: '城市3',
+                prop: 'city3',
+                type: 'select',
+                filterable: true, // 支持搜索
+                dicFlag: false,
+                hide: true,
+                specialSel: false,
+                dicUrl: `${baseUrl}/getCity/{{key}}`,
+                dicData: 'city3',
+                rules: [
+                  {
+                    required: true,
+                    message: '请选择城市',
+                    trigger: 'change'
+                  }
+                ]
+              },
+            {
+              label: '地区3',
+              prop: 'area3',
+              dicFlag: false,
+              filterable: true, // 支持搜索
+              hide: true,
+              specialSel: false,
+              type: 'select',
+              dicUrl: `${baseUrl}/getArea/{{key}}`,
+              dicData: 'area3',
+              rules: [
+                {
+                  required: true,
+                  message: '请选择地区',
+                  trigger: 'change'
+                }
+              ]
+            }
+          ]
+        }
+      }
+    },
+    mounted() {
+      setTimeout(() => {
+        this.setValue();
+      }, 0);
+    },
+    methods: {
+      submit() {
+        this.$message.success('当前数据' + JSON.stringify(this.data))
+      },
+      setValue() {
+        // setTimeout(() => {
+          this.data.province = "210000";
+          this.data.city = "210100";
+          this.data.area = "210104";
+          this.data.pp = "110000";
+          this.data.cc = "110100";
+          this.data.aa = "110101";
+          this.data.qq = "110102";
+        // }, 10);
+        // this.data.province3 = "210000";
+        // this.data.city3 = "210100";
+        // this.data.area3 = "210104";
+      }
+    }
+  })
+</script>
+
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud ref="crud" :option="option" :data="data" @search-change="searchChange">
+
+    </avue-crud>
+  </div>
+</body>
+<script>
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {},
+        data: [{
+          name: '1'
+        }, {
+          name: '2'
+        }]
+      }
+    },
+    mounted() {
+      setTimeout(() => {
+        this.option = {
+          emptyText: '自定义暂无数据提示语',
+          column: [
+          {
+              label: '级别',
+              prop: 'cascader1',
+              type: 'cascader',
+              search: true,
+              changeOnSelect: true,
+              showAllLevels: false,
+              searchFilterable: true,
+              props: {checkStrictly: true},
+              cascaderItem: ['city'],
+              dicData: [{
+                label: '一级',
+                value: '222',
+                children: [{
+                      value: 'tooltip',
+                      label: 'Tooltip 文字提示'
+                    }, {
+                      value: 'popover',
+                      label: 'Popover 弹出框'
+                    }, {
+                      value: 'card',
+                      label: 'Card 卡片'
+                    }, {
+                      value: 'carousel',
+                      label: 'Carousel 走马灯'
+                    },
+                ]
+              }],
+              rules: [
+                {
+                  type: 'array',
+                  required: true,
+                  message: '请输入级别',
+                  trigger: 'change'
+                }
+              ]
+            },{
+            label: '姓名',
+            prop: 'name',
+            search: true
+          }, {
+            label: '年龄',
+            prop: 'sex',
+            search: true
+          }, {
+            label: '日期',
+            prop: 'datetime',
+            type: 'datetime',
+            search: true
+          }, {
+            label: '测试',
+            prop: 'test',
+            search: true
+          }, {
+            label: '字典',
+            prop: 'dic',
+            type: 'select',
+            filterable: true,
+            remote: true,
+            search: true,
+            dicData: [{
+              label: 1,
+              value: 1
+            }]
+          }]
+        }
+      }, 0);
+    },
+    methods: {
+      searchChange(params) {
+        const index = this.$refs.crud.findColumnIndex("dic");
+        console.log(params);
+        this.option.column[index].dicData = [{
+          label: 2,
+          value: 2
+        }];
+      }
+    }
+  })
+</script>
+
+</html>

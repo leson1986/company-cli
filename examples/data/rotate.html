@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/theme-chalk/index.css" />
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/element-ui/2.11.0/index.js"></script>
+  <link rel="stylesheet" href="../../lib/index.css" />
+  <script src="../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-data-rotate :option="option"></avue-data-rotate>
+  </div>
+</body>
+<script>
+
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        option: {
+          span: 6,
+          data: [
+            {
+              count: 150,
+              title: '新订单',
+              icon: 'el-icon-warning',
+              color: 'rgb(49, 180, 141)'
+            }, {
+              count: '53%',
+              title: '跳出率',
+              icon: 'el-icon-view',
+              color: '#00a65a'
+            }, {
+              count: 44,
+              title: '用户注册数',
+              icon: 'el-icon-setting',
+              color: '#f39c12'
+            }, {
+              count: 56,
+              title: '访客',
+              icon: 'el-icon-tickets',
+              color: '#dd4b39'
+            },
+          ]
+        },
+      }
+    },
+    created() {
+
+    },
+    methods: {
+
+    }
+  })
+</script>
+
+</html>

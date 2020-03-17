@@ -1,0 +1,16 @@
+@import './src/common.scss';
+@import './src/elementui-reset.scss';
+@import './src/vant-reset.scss';
+@import './src/media.scss';
+@import './src/nprogress.scss';
+
+//element-ui
+@import './src/element-ui/index.scss';
+//antd
+@import './src/antd/index.scss';
+// 数据展示
+@import './src/data/index.scss';
+// 图表展示
+@import './src/echart/index.scss';
+// 新树样式
+@import './src/vue-treeselect.scss';

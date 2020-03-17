@@ -1,0 +1,864 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="../../../lib/cdn/element-ui/2.11.1/theme-chalk/index.css" />
+  <script src="../../../lib/cdn/element-ui/2.11.1/index.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    {{data}}
+    <avue-form :option="option" v-model="data"></avue-form>
+    
+    <avue-form v-model="searchObj" :option="searchForm" ref="searchFrom"></avue-form>
+  </div>
+</body>
+<script>
+  var DIC = {
+      VAILD: [{
+          label: '真',
+          value: 'true'
+      }, {
+          label: '假',
+          value: 'false'
+      }],
+      SEX: [{
+          label: '男',
+          value: 0
+      }, {
+          label: '女',
+          value: 1
+      }]
+  }
+  const DICS= [{
+    id: 0,
+    label: '一级',
+    value: 0,
+    children: [
+      {
+        id: 1,
+        label: '一级1',
+        value: 1,
+        children: [
+          {
+            id: 11,
+            label: '一级11',
+            value: 11,
+          },
+          {
+            id: 12,
+            label: '一级12',
+            value: 12,
+            children: [
+              {
+                id: 111,
+                label: '一级111',
+                value: 111,
+              },
+              {
+                id: 122,
+                label: '一级122',
+                value: 122,
+              }
+            ]
+          }
+        ]
+      }, {
+        id: 2,
+        label: '一级2',
+        value: 2,
+      }
+    ]
+  },
+  // {
+  //   id: 10,
+  //   label: '一级rrr',
+  //   value: 10,
+  //   children: [
+  //     {
+  //       id: 41,
+  //       label: '一级1',
+  //       value: 41,
+  //       children: [
+  //         {
+  //           id: 411,
+  //           label: '一级411',
+  //           value: 411,
+  //         },
+  //         {
+  //           id: 412,
+  //           label: '一级412',
+  //           value: 412,
+  //           children: [
+  //             {
+  //               id: 4111,
+  //               label: '一级1411',
+  //               value: 4111,
+  //             },
+  //             {
+  //               id: 4122,
+  //               label: '一级1422',
+  //               value: 4122,
+  //             }
+  //           ]
+  //         }
+  //       ]
+  //     }, {
+  //       id: 42,
+  //       label: '一级42',
+  //       value: 42,
+  //     }
+  //   ]
+  // }
+]
+  const CADIC = [
+        {
+            value: 'zhinan',
+            label: '指南',
+            children: [{
+              value: 'shejiyuanze',
+              label: '设计原则',
+              children: [{
+                value: 'yizhi',
+                label: '一致'
+              }, {
+                value: 'fankui',
+                label: '反馈'
+              }, {
+                value: 'xiaolv',
+                label: '效率'
+              }, {
+                value: 'kekong',
+                label: '可控'
+              }]
+            }
+          ]
+        }
+  ]
+  const baseUrl = 'http://172.22.23.76:8090'
+  new Vue({
+    el: '#app',
+    data: function() {
+      return {
+        searchObj: {
+          // IV_ZGS: '50000054',
+          // IV_OBJID: '50000083'
+        },
+        searchForm:{
+            align:'center',
+            menuAlign:'center',
+            editBtn:false,
+            delBtn:false,
+            menu:false,
+            submitBtn:false,
+            emptyBtn:false,
+            group:[
+              {
+                label:'',
+                prop: "group0",
+                labelWidth:60,
+                column:[{
+                      showAllLevels: false,
+                      props: {checkStrictly: true},
+                      cascaderChange: true,
+                      cascaderItem: ["ZRZBM"],
+                      dicMethod: "get",
+                      dicUrl: "http://172.22.23.76:8090/sap/basic/common/sapBasic/getDataDictionary?userName=ADMIN&fieldCode=S0092&value=&value2=01",
+                      disabled: false,
+                      display: true,
+                      label: "入职公司",
+                      prop: "ZRZGS",
+                      span: 8,
+                      specialSel: false,
+                      type: "select",
+                      width: "100%",
+                  },
+                  {
+                    align: "center",
+                    cascaderChange: true,
+                    dicMethod: "get",
+                    dicUrl: "http://172.22.23.76:8090/sap/basic/common/sapUser/getAccountOrganization?userName=ADMIN&orgeh={{key}}&type=2",
+                    disabled: false,
+                    display: true,
+                    filterable: true,
+                    label: "入职部门",
+                    prop: "ZRZBM",
+                    props: {checkStrictly: true},
+                    showAllLevels: false,
+                    span: 8,
+                    specialSel: false,
+                    type: "cascader",
+                    width: "100%",
+                  },
+                  {
+                    align: "center",
+                    cascaderChange: true,
+                    dicMethod: "get",
+                    dicUrl: "http://172.22.23.76:8090/sap/basic/common/sapUser/getPositionList?userName=ADMIN&orgeh={{key}}",
+                    disabled: false,
+                    display: true,
+                    filterable: true,
+                    label: "入职岗位",
+                    prop: "ZRZGW",
+                    span: 8,
+                    specialSel: false,
+                    type: "select",
+                    width: "100%",
+                  },
+                  {
+                    label: "姓名",
+                    labelWidth:50,
+                    prop: "IV_SEARCH",
+                    span:5,
+                  },
+                  {
+                    label: "公司",
+                    labelWidth:50,
+                    prop: "IV_ZGS",
+                    type:'select',
+                    dicUrl: `${baseUrl}/sap/basic/common/sapBasic/getDataDictionary?fieldCode=S0092&value2=01`,
+                    span:5,
+                    cascaderItem: ["IV_OBJID"],
+                    cascaderChange: true,
+                  },
+                  {
+                    label: "部门",
+                    labelWidth:50,
+                    prop: "IV_OBJID",
+                    span:5,
+                    type: "tree",
+                    dicUrl: `${baseUrl}/sap/basic/common/sapUser/getAccountOrganization?userName=ADMIN&type=2&orgeh={{key}}`,
+                    cascaderChange: true,
+                  },
+                ]
+              }
+            ]
+        },
+        data: {
+          shenfeng: 0,
+          shenfeng1: 4
+        },
+        option: {
+          column: [{
+              label:'级别',
+              prop:'cascader',
+              type:'cascader',
+              dicData:[{
+                label:'一级',
+                value:0,
+                children:[
+                  {
+                    label:'一级1',
+                    value:1,
+                  },{
+                    label:'一级2',
+                    value:2,
+                  }
+                ]
+              }],
+          },{
+            label: '多选1',
+            prop: 'shenfeng',
+            type: 'tree',
+            valueKey: 'id',
+            dicData: DICS,
+            // nodeClick: (data) => {
+            //   this.$message.success(JSON.stringify(data))
+            // },
+            // checked: (data) => {
+            //   this.$message.success(JSON.stringify(data))
+            // }
+          }, {
+            align: "center",
+            cascaderChange: true,
+            disabled: false,
+            display: true,
+            filterable: true,
+            label: '单选',
+            prop: 'shenfeng1',
+            type: 'tree',
+            // parent: false,
+            props: {
+              label: 'name',
+              value: 'id'
+            },
+            filterable: true,
+            dicData: [{
+              "id": 6,
+              "name": "系统配制",
+              "permissionkey": "/system",
+              "type": "MENU",
+              "enable": true,
+              "descnote": "系统配制",
+              "wiegth": 0,
+              "path": "/system",
+              "resource": null,
+              "component": "",
+              "icon": "icon-caidan",
+              "children": [{
+                "id": 4,
+                "name": "角色管理",
+                "permissionkey": "/system/role",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "角色管理",
+                "wiegth": 10,
+                "path": "/system/role",
+                "resource": "/system/role/list",
+                "component": "views/system/role",
+                "icon": "icon-caidan",
+                "children": [{
+                  "id": 32,
+                  "name": "删除角色",
+                  "permissionkey": "system:role:delete",
+                  "type": "FUNCTION",
+                  "enable": true,
+                  "descnote": "删除角色",
+                  "wiegth": 0,
+                  "path": "",
+                  "resource": "/system/role/delete",
+                  "component": null,
+                  "icon": null,
+                  "children": [],
+                  "meta": null,
+                  "text": "删除角色",
+                  "label": "删除角色"
+                }],
+                "meta": "{i18n:\"role\"}",
+                "text": "角色管理",
+                "label": "角色管理"
+              }, {
+                "id": 19,
+                "name": "权限资源",
+                "permissionkey": "/system/permission",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "权限资源",
+                "wiegth": 0,
+                "path": "/system/permission",
+                "resource": "/system/permission/list",
+                "component": "views/system/permission",
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"permission\"}",
+                "text": "权限资源",
+                "label": "权限资源"
+              }],
+              "meta": "{i18n:\"systemconfig\"}",
+              "text": "系统配制",
+              "label": "系统配制"
+            }, {
+              "id": 8,
+              "name": "sys_crud_btn_add",
+              "permissionkey": "sys_crud_btn_add",
+              "type": "FUNCTION",
+              "enable": true,
+              "descnote": null,
+              "wiegth": 0,
+              "path": null,
+              "resource": null,
+              "component": null,
+              "icon": null,
+              "children": [],
+              "meta": null,
+              "text": "sys_crud_btn_add",
+              "label": "sys_crud_btn_add"
+            }, {
+              "id": 9,
+              "name": "sys_crud_btn_export",
+              "permissionkey": "sys_crud_btn_export",
+              "type": "FUNCTION",
+              "enable": true,
+              "descnote": null,
+              "wiegth": 0,
+              "path": null,
+              "resource": null,
+              "component": null,
+              "icon": null,
+              "children": [],
+              "meta": null,
+              "text": "sys_crud_btn_export",
+              "label": "sys_crud_btn_export"
+            }, {
+              "id": 10,
+              "name": "sys_menu_btn_add",
+              "permissionkey": "sys_menu_btn_add",
+              "type": "FUNCTION",
+              "enable": true,
+              "descnote": null,
+              "wiegth": 0,
+              "path": null,
+              "resource": null,
+              "component": null,
+              "icon": null,
+              "children": [],
+              "meta": null,
+              "text": "sys_menu_btn_add",
+              "label": "sys_menu_btn_add"
+            }, {
+              "id": 11,
+              "name": "sys_menu_btn_edit",
+              "permissionkey": "sys_menu_btn_edit",
+              "type": "FUNCTION",
+              "enable": true,
+              "descnote": null,
+              "wiegth": 0,
+              "path": null,
+              "resource": null,
+              "component": null,
+              "icon": null,
+              "children": [],
+              "meta": null,
+              "text": "sys_menu_btn_edit",
+              "label": "sys_menu_btn_edit"
+            }, {
+              "id": 12,
+              "name": "sys_menu_btn_del",
+              "permissionkey": "sys_menu_btn_del",
+              "type": "FUNCTION",
+              "enable": true,
+              "descnote": null,
+              "wiegth": 0,
+              "path": null,
+              "resource": null,
+              "component": null,
+              "icon": null,
+              "children": [],
+              "meta": null,
+              "text": "sys_menu_btn_del",
+              "label": "sys_menu_btn_del"
+            }, {
+              "id": 13,
+              "name": "sys_role_btn1",
+              "permissionkey": "sys_role_btn1",
+              "type": "FUNCTION",
+              "enable": true,
+              "descnote": null,
+              "wiegth": 0,
+              "path": null,
+              "resource": null,
+              "component": null,
+              "icon": null,
+              "children": [],
+              "meta": null,
+              "text": "sys_role_btn1",
+              "label": "sys_role_btn1"
+            }, {
+              "id": 14,
+              "name": "sys_role_btn2",
+              "permissionkey": "sys_role_btn2",
+              "type": "FUNCTION",
+              "enable": true,
+              "descnote": null,
+              "wiegth": 0,
+              "path": null,
+              "resource": null,
+              "component": null,
+              "icon": null,
+              "children": [],
+              "meta": null,
+              "text": "sys_role_btn2",
+              "label": "sys_role_btn2"
+            }, {
+              "id": 15,
+              "name": "sys_role_btn3",
+              "permissionkey": "sys_role_btn3",
+              "type": "FUNCTION",
+              "enable": true,
+              "descnote": null,
+              "wiegth": 0,
+              "path": null,
+              "resource": null,
+              "component": null,
+              "icon": null,
+              "children": [],
+              "meta": null,
+              "text": "sys_role_btn3",
+              "label": "sys_role_btn3"
+            }, {
+              "id": 16,
+              "name": "sys_role_btn4",
+              "permissionkey": "sys_role_btn4",
+              "type": "FUNCTION",
+              "enable": true,
+              "descnote": null,
+              "wiegth": 0,
+              "path": null,
+              "resource": null,
+              "component": null,
+              "icon": null,
+              "children": [],
+              "meta": null,
+              "text": "sys_role_btn4",
+              "label": "sys_role_btn4"
+            }, {
+              "id": 17,
+              "name": "sys_role_btn5",
+              "permissionkey": "sys_role_btn5",
+              "type": "FUNCTION",
+              "enable": true,
+              "descnote": null,
+              "wiegth": 0,
+              "path": null,
+              "resource": null,
+              "component": null,
+              "icon": null,
+              "children": [],
+              "meta": null,
+              "text": "sys_role_btn5",
+              "label": "sys_role_btn5"
+            }, {
+              "id": 18,
+              "name": "sys_role_btn6",
+              "permissionkey": "sys_role_btn6",
+              "type": "FUNCTION",
+              "enable": true,
+              "descnote": null,
+              "wiegth": 0,
+              "path": null,
+              "resource": null,
+              "component": null,
+              "icon": null,
+              "children": [],
+              "meta": "{i18n:\"dashboard\"}",
+              "text": "sys_role_btn6",
+              "label": "sys_role_btn6"
+            }, {
+              "id": 31,
+              "name": "test",
+              "permissionkey": "/test",
+              "type": "MENU",
+              "enable": true,
+              "descnote": null,
+              "wiegth": 0,
+              "path": "/test",
+              "resource": null,
+              "component": null,
+              "icon": null,
+              "children": [{
+                "id": 1,
+                "name": "异常页",
+                "permissionkey": "/error",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "测试",
+                "wiegth": 0,
+                "path": "/error",
+                "resource": "",
+                "component": null,
+                "icon": "icon-caidan",
+                "children": [{
+                  "id": 2,
+                  "name": "403",
+                  "permissionkey": "/error/error",
+                  "type": "MENU",
+                  "enable": true,
+                  "descnote": null,
+                  "wiegth": 0,
+                  "path": "/error/403",
+                  "resource": "",
+                  "component": "components/error-page/403",
+                  "icon": "icon-caidan",
+                  "children": [],
+                  "meta": null,
+                  "text": "403",
+                  "label": "403"
+                }, {
+                  "id": 3,
+                  "name": "404",
+                  "permissionkey": "/error/404",
+                  "type": "MENU",
+                  "enable": true,
+                  "descnote": null,
+                  "wiegth": 2,
+                  "path": "/error/404",
+                  "resource": null,
+                  "component": "components/error-page/404",
+                  "icon": "icon-caidan",
+                  "children": [],
+                  "meta": null,
+                  "text": "404",
+                  "label": "404"
+                }, {
+                  "id": 5,
+                  "name": "500",
+                  "permissionkey": "/error/500",
+                  "type": "MENU",
+                  "enable": true,
+                  "descnote": null,
+                  "wiegth": 1,
+                  "path": "/error/500",
+                  "resource": null,
+                  "component": "components/error-page/500",
+                  "icon": "icon-caidan",
+                  "children": [],
+                  "meta": null,
+                  "text": "500",
+                  "label": "500"
+                }],
+                "meta": "{i18n:\"error\"}",
+                "text": "异常页",
+                "label": "异常页"
+              }, {
+                "id": 7,
+                "name": "缓冲",
+                "permissionkey": "/cache",
+                "type": "MENU",
+                "enable": true,
+                "descnote": null,
+                "wiegth": 0,
+                "path": "/test/cache",
+                "resource": null,
+                "component": "views/util/cache",
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"cache\"}",
+                "text": "缓冲",
+                "label": "缓冲"
+              }, {
+                "id": 20,
+                "name": "标签",
+                "permissionkey": "/tags",
+                "type": "MENU",
+                "enable": true,
+                "descnote": null,
+                "wiegth": 0,
+                "path": "/test/tags",
+                "resource": null,
+                "component": "views/util/tags",
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"tags\"}",
+                "text": "标签",
+                "label": "标签"
+              }, {
+                "id": 21,
+                "name": "存储",
+                "permissionkey": "/store",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "存储",
+                "wiegth": 0,
+                "path": "/test/store",
+                "resource": null,
+                "component": "views/util/store",
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"store\"}",
+                "text": "存储",
+                "label": "存储"
+              }, {
+                "id": 22,
+                "name": "全局函数",
+                "permissionkey": "avuex",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "全局函数",
+                "wiegth": 0,
+                "path": "https://avuex.avue.top/$/doc/api",
+                "resource": null,
+                "component": null,
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"api\"}",
+                "text": "全局函数",
+                "label": "全局函数"
+              }, {
+                "id": 23,
+                "name": "日志监控",
+                "permissionkey": "/logs",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "日志监控",
+                "wiegth": 0,
+                "path": "/test/logs",
+                "resource": null,
+                "component": "views/util/logs",
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"logs\"}",
+                "text": "日志监控",
+                "label": "日志监控"
+              }, {
+                "id": 24,
+                "name": "表格",
+                "permissionkey": "/table",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "表格",
+                "wiegth": 0,
+                "path": "/test/table",
+                "resource": null,
+                "component": "views/util/table",
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"table\"}",
+                "text": "表格",
+                "label": "表格"
+              }, {
+                "id": 25,
+                "name": "表单",
+                "permissionkey": "/form",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "表单",
+                "wiegth": 0,
+                "path": "/test/form",
+                "resource": null,
+                "component": "views/util/form",
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"form\"}",
+                "text": "表单",
+                "label": "表单"
+              }, {
+                "id": 26,
+                "name": "权限",
+                "permissionkey": "/permission",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "权限",
+                "wiegth": 0,
+                "path": "/test/permission",
+                "resource": null,
+                "component": "views/util/permission",
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"permission\"}",
+                "text": "权限",
+                "label": "权限"
+              }, {
+                "id": 27,
+                "name": "返回顶部",
+                "permissionkey": "/top",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "返回顶部",
+                "wiegth": 0,
+                "path": "/test/top",
+                "resource": null,
+                "component": "views/util/top",
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"top\"}",
+                "text": "返回顶部",
+                "label": "返回顶部"
+              }, {
+                "id": 28,
+                "name": "表格表单",
+                "permissionkey": "/crud-form",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "表格表单",
+                "wiegth": 0,
+                "path": "/test/crud-form",
+                "resource": null,
+                "component": "views/util/crud-form",
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"crudForm\"}",
+                "text": "表格表单",
+                "label": "表格表单"
+              }, {
+                "id": 29,
+                "name": "图钉",
+                "permissionkey": "/affix",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "图钉",
+                "wiegth": 0,
+                "path": "/test/affix",
+                "resource": null,
+                "component": "views/util/affix",
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"affix\"}",
+                "text": "图钉",
+                "label": "图钉"
+              }, {
+                "id": 30,
+                "value": 44,
+                "name": "数据展示",
+                "permissionkey": "/data",
+                "type": "MENU",
+                "enable": true,
+                "descnote": "数据展示",
+                "wiegth": 0,
+                "path": "/test/data",
+                "resource": null,
+                "component": "views/util/data",
+                "icon": "icon-caidan",
+                "children": [],
+                "meta": "{i18n:\"data\"}",
+                "text": "数据展示",
+                "label": "数据展示"
+              }],
+              "meta": "{i18n:\"test\"}",
+              "text": "test",
+              "label": "test"
+            }],
+            rules: [{
+              required: true,
+              message: "请选择单选",
+              trigger: "change"
+            }]
+          }, {
+              label: "日期时间",
+              prop: "date",
+              type: "date",
+              format: "yyyy-MM-dd",
+              valueFormat: "timestamp",
+              rules: [{
+                required: true,
+                message: "请选择日期",
+                trigger: "change"
+              }]
+          },
+              {
+                  label: "类型",
+                  prop: "type",
+                  type: "select",
+                  dicData: DIC.VAILD,
+                  filterable: true, // 支持搜索
+                  span:6,
+                  rules: [{
+                    required: true,
+                    message: "请选择类型",
+                    trigger: "blur"
+                  }]
+              },
+        
+        ]
+        }
+      }
+    },
+    created: function() {
+      setTimeout(() => {
+        // this.data.shenfeng1 = 44
+        
+        // this.searchObj.IV_ZGS = '50000054'
+        // this.searchObj.IV_OBJID = '50000083'
+      }, 1000)
+    },
+    methods: {
+      submit: function() {
+        // this.$message.success('当前数据' + JSON.stringify(this.form))
+      }
+    }
+  })
+</script>
+
+
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <!-- 导入表格需要的包 -->
+
+  <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+  <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
+  <link rel="stylesheet" href="../../../lib/cdn/element-ui/2.11.1/theme-chalk/index.css" />
+  <script src="../../../lib/cdn/element-ui/2.11.1/index.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-crud :data="data" :option="option" @row-update="rowUpdate" @row-save="rowSave"></avue-crud>
+
+
+  </div>
+</body>
+<script>
+  let baseUrl = 'https://cli2.avuejs.com/api/area'
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+
+        data: [
+
+        ],
+        option: {
+          column:
+            [
+              { "label": "入学时间", "prop": "BEGDA", "disabled": false, "display": true, "type": "date", "span": 12, "align": "center", "specialSel": false,  "format": "yyyy-MM-dd", "valueFormat": "yyyy-MM-dd" }, 
+              { "label": "毕业时间", "prop": "ENDDA", "disabled": false, "display": true, "type": "date", "span": 12, "align": "center", "specialSel": false, "format": "yyyy-MM-dd", "valueFormat": "yyyy-MM-dd" }, 
+              { "label": "学历", "prop": "SLART", "disabled": false, "display": true, "type": "select", "span": 12, "align": "center", "specialSel": false, "rules": [{ "required": true, "message": "请选择学历", "trigger": "change" }], "cascaderItem": ["ZXW"], "cascaderChange": true, "filterable": true, "dicUrl": "http://172.22.23.76:8090/sap/basic/common/sapBasic/getDataDictionary?userName=ADMIN&fieldCode=S0021&value=&value2={{key}}", "dicMethod": "get" }, 
+              { "label": "毕业学校", "prop": "INSTI", "disabled": false, "display": true, "type": "input", "span": 12, "align": "center", "specialSel": false, "rules": [{ "required": false, "message": "请输入毕业学校", "trigger": "blur" }, 
+              { "min": 0, "max": 80, "message": "长度最多 80 个字符", "trigger": "blur" }] },
+              { "label": "学校类别", "prop": "ZXXLX", "disabled": false, "display": true, "type": "select", "span": 12, "align": "center", "specialSel": false, "rules": [{ "required": false, "message": "请选择学校类别", "trigger": "change" }], "dicData": [{ "DDTEXT": "ZHRD_ZXXLX", "TEXT": "C9", "label": "C9", "VALUE": "10", "value": "10", "SHNAME": "ZHRD_ZXXLX" }, 
+              { "DDTEXT": "ZHRD_ZXXLX", "TEXT": "985", "label": "985", "VALUE": "20", "value": "20", "SHNAME": "ZHRD_ZXXLX" }, 
+              { "DDTEXT": "ZHRD_ZXXLX", "TEXT": "211", "label": "211", "VALUE": "30", "value": "30", "SHNAME": "ZHRD_ZXXLX" }, 
+              { "DDTEXT": "ZHRD_ZXXLX", "TEXT": "世界前100", "label": "世界前100", "VALUE": "40", "value": "40", "SHNAME": "ZHRD_ZXXLX" }, 
+              { "DDTEXT": "ZHRD_ZXXLX", "TEXT": "世界前200", "label": "世界前200", "VALUE": "50", "value": "50", "SHNAME": "ZHRD_ZXXLX" }, 
+              { "DDTEXT": "ZHRD_ZXXLX", "TEXT": "本科", "label": "本科", "VALUE": "60", "value": "60", "SHNAME": "ZHRD_ZXXLX" }, 
+              { "DDTEXT": "ZHRD_ZXXLX", "TEXT": "其他海外院校", "label": "其他海外院校", "VALUE": "80", "value": "80", "SHNAME": "ZHRD_ZXXLX" }, 
+              { "DDTEXT": "ZHRD_ZXXLX", "TEXT": "大专院校及以下院校", "label": "大专院校及以下院校", "VALUE": "90", "value": "90", "SHNAME": "ZHRD_ZXXLX" }], "filterable": true }, 
+              { "label": "学习方式", "prop": "ZXXFS", "disabled": false, "display": true, "type": "select", "span": 12, "align": "center", "specialSel": false, "rules": [{ "required": true, "message": "请选择学习方式", "trigger": "change" }], "dicData": [{ "DDTEXT": "从学方式", "TEXT": "全日制", "label": "全日制", "VALUE": "10", "value": "10", "SHNAME": "S0035" }, 
+              { "DDTEXT": "从学方式", "TEXT": "非全日制", "label": "非全日制", "VALUE": "20", "value": "20", "SHNAME": "S0035" }], "filterable": true }, 
+              { "label": "学科门类", "prop": "ZXKML", "disabled": false, "display": true, "type": "select", "span": 12, "align": "center", "specialSel": false, "rules": [{ "required": false, "message": "请选择学科门类", "trigger": "change" }], "cascaderItem": ["ZZYLB"], "cascaderChange": true, "filterable": true, "dicUrl": "http://172.22.23.76:8090/sap/basic/common/sapBasic/getDataDictionary?userName=ADMIN&fieldCode=S0195&value=&value2={{key}}", "dicMethod": "get" }, 
+              { "label": "专业类别", "prop": "ZZYLB", "disabled": false, "display": true, "type": "select", "span": 12, "align": "center", "specialSel": false, "rules": [{ "required": false, "message": "请选择专业类别", "trigger": "change" }], "cascaderChange": true, "filterable": true, "dicUrl": "http://172.22.23.76:8090/sap/basic/common/sapBasic/getDataDictionary?userName=ADMIN&fieldCode=S0163&value=&value2={{key}}", "dicMethod": "get" }, 
+              { "label": "专业", "prop": "ZZYMC", "disabled": false, "display": true, "type": "input", "span": 12, "align": "center", "specialSel": false, "rules": [{ "required": false, "message": "请输入专业", "trigger": "blur" }, 
+              { "min": 0, "max": 40, "message": "长度最多 40 个字符", "trigger": "blur" }] }, 
+              { "label": "学位", "prop": "ZXW", "disabled": false, "display": true, "type": "select", "span": 12, "align": "center", "specialSel": false, "rules": [{ "required": false, "message": "请选择学位", "trigger": "change" }], "cascaderChange": true, "filterable": true, "dicUrl": "http://172.22.23.76:8090/sap/basic/common/sapBasic/getDataDictionary?userName=ADMIN&fieldCode=S0020&value=&value2={{key}}", "dicMethod": "get" }, 
+              { "label": "毕业类型", "prop": "ZBYLX", "disabled": false, "display": true, "type": "select", "span": 12, "align": "center", "specialSel": false, "rules": [{ "required": false, "message": "请选择毕业类型", "trigger": "change" }], "dicData": [{ "DDTEXT": "ZHRD_ZBYLX", "TEXT": "毕业", "label": "毕业", "VALUE": "10", "value": "10", "SHNAME": "ZHRD_ZBYLX" }, 
+              { "DDTEXT": "ZHRD_ZBYLX", "TEXT": "肄业", "label": "肄业", "VALUE": "20", "value": "20", "SHNAME": "ZHRD_ZBYLX" }, 
+              { "DDTEXT": "ZHRD_ZBYLX", "TEXT": "结业", "label": "结业", "VALUE": "30", "value": "30", "SHNAME": "ZHRD_ZBYLX" }], "filterable": true }]
+        }
+      }
+    },
+    mounted() {
+      setTimeout(() => {
+        console.log(this.data)
+        this.setValue();
+      }, 1000);
+    },
+    methods: {
+      handleChange(value) {
+        console.log(value);
+      },
+      rowUpdate(row, index, done) {
+        console.log(row)
+        this.data.splice(index, 2, row.tableForm)
+        console.log(this.data)
+        done()
+      },
+      rowSave(row, done) {
+        console.log(row)
+        this.data.push(row.tableForm)
+        done()
+      },
+      setValue() {
+      }
+    },
+  })
+</script>
+
+</html>

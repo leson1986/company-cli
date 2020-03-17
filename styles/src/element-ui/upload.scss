@@ -1,0 +1,84 @@
+.avue-upload {
+  &--list {
+    .el-upload {
+      border: 1px dashed #d9d9d9;
+      border-radius: 6px;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+    }
+    .el-upload:hover {
+      border-color: #409eff;
+    }
+  }
+  &__icon {
+    font-size: 28px;
+    color: #8c939d;
+    width: 178px;
+    height: 178px;
+    line-height: 178px !important;
+    text-align: center;
+  }
+  &__avatar {
+    width: 178px;
+    height: 178px;
+    display: block;
+  }
+}
+
+.avue-upload__mobile{
+  $img-width:70px;
+  &-upload{
+    margin-top: -8px;
+    width:$img-width;
+    height:$img-width;
+    background-color: #fbfdff;
+    border:1px dashed #ccc;
+    border-radius: 3px;
+    line-height: $img-width+10px;
+    text-align: center;
+    i{
+      color:#666;
+      font-size: 24px;
+    }
+  }
+  &-list{
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+  }
+  &-menu{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: absolute;
+    width:100%;
+    height: 100%;
+    left:0;
+    top:0;
+    color:#fff;
+    background-color: rgba(0,0,0,.2);
+    z-index:1024;
+    border-radius: 5px;
+    i{
+      margin:0 5px;
+    }
+  }
+  &-item{
+    position: relative;
+    margin-right: 8px;
+    margin-bottom: 10px;
+    width:$img-width;
+    height:$img-width;
+    border:1px solid #eee;
+    border-radius: 5px;
+    
+    img{
+      width: 100%;
+      height: 100%;
+      border-radius: 5px;
+      
+    }
+  }
+}

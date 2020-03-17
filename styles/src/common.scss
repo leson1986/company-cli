@@ -1,0 +1,144 @@
+body {
+  font-family: Chinese Quote, -apple-system, BlinkMacSystemFont, Segoe UI, PingFang SC, Hiragino Sans GB, Microsoft YaHei, Helvetica Neue, Helvetica, Arial, sans-serif, Apple Color Emoji, Segoe UI Emoji, Segoe UI Symbol;
+}
+
+.avue-canvas {
+  display: none;
+}
+
+.avue-ghost {
+  opacity: 0.5;
+  background: #c8ebfb;
+}
+
+.avue-grid {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-size: 20px 20px, 20px 20px;
+  background-image: linear-gradient(rgba(0, 0, 0, .1) 1px, transparent 0), linear-gradient(90deg, rgba(0, 0, 0, .1) 1px, transparent 0);
+}
+
+.avue-mask {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(55, 55, 55, .6);
+  height: 100%;
+  z-index: 1000;
+}
+
+.avue--card {
+  box-shadow: 2px 1px 8px rgba(0, 0, 0, 0.15);
+  border-radius: 5px;
+}
+
+.avue-dialog {
+  max-height: 500px;
+  overflow: hidden;
+  overflow-y: auto;
+
+  iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    overflow: hidden;
+    box-sizing: border-box;
+  }
+}
+
+.avue-queue--block {
+  display: inline-block;
+}
+
+.avuex-opacity {
+  opacity: 0
+}
+
+.avuex-opacity--active {
+  opacity: 1
+}
+
+.avue-cell {
+  border-top: 1px solid #eee;
+  background-color: #fff;
+
+  &-group {
+    padding-top: 10px;
+  }
+
+  &--row {
+    margin-bottom: 10px;
+    border-bottom: 1px solid #eee;
+  }
+
+  &__tags {
+    margin-right: 10px;
+  }
+
+  &__tip {
+    margin-left: 10px;
+    font-size: 12px;
+    color: #999;
+  }
+
+  &__title {
+    margin: 0;
+    padding: 5px 15px 5px 20px;
+    line-height: 30px;
+    font-size: 14px;
+    color: #323233;
+    line-height: 24px;
+
+    &+.van-cell-group {
+      padding-left: 5px;
+    }
+
+    &--required {
+      position: relative;
+
+      &::before {
+        content: '*';
+        position: absolute;
+        left: 7px;
+        top: 7px;
+        font-size: 14px;
+        color: #f44;
+      }
+    }
+  }
+}
+
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity .3s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}
+
+.avue-input {
+  &__content {
+    position: relative;
+  }
+
+  &__tip {
+    position: absolute;
+    bottom: 5px;
+    right: 20px;
+    color: #999;
+
+    &--input {
+      top: 1px;
+      right: 28px;
+      z-index: 2;
+    }
+  }
+}

@@ -1,0 +1,108 @@
+.avue-form {
+  position: relative;
+  margin: 0 auto;
+  box-sizing: border-box;
+  &__item{
+    &--top{
+      .el-form-item__label{
+        width:100% !important;
+        text-align: left !important;
+      }
+      .el-form-item__content{
+        margin-left: 0 !important;
+      }
+    }
+    &--left{
+     .el-form-item__label{
+      text-align: left !important;
+     }
+    }
+  }
+  
+  &__menu {
+    width: 100%;
+    &--center {
+      text-align: center;
+    }
+    &--left {
+      text-align: left;
+    }
+    &--right {
+      text-align: right;
+    }
+  }
+  &__group {
+    display: flex;
+    align-items: flex-start;
+    flex-wrap: wrap;
+    height: auto;
+    // overflow: hidden;
+    .el-col {
+      position: relative;
+    }
+
+    .el-input.is-disabled .el-input__inner {
+      background-color: #EBEEF5;
+      border-color: #C8C5D9;
+      color: #858CAA;
+    }
+  }
+  &__line {
+    display: inline-block;
+    height: 42px;
+  }
+  &__row {
+    &--block {
+      width: 100%;
+      display: block;
+    }
+    &--cursor {
+      cursor: pointer;
+    }
+  }
+  &__option {
+    position: absolute;
+    right: 0;
+    top: -10px;
+    z-index: 999;
+    i {
+      color: #666;
+    }
+    i + i {
+      margin-left: 10px;
+    }
+  }
+}
+
+.avue-form__mobile {
+  padding-bottom: 20px;
+  background-color: #f0f0f0;
+  &-menu {
+    margin-top: 30px;
+    padding: 0 20px;
+  }
+  .van-cell {
+    padding: 10px 15px 10px 20px;
+  }
+  .van-cell--required::before {
+    top: 12px;
+  }
+  .van-cell:not(:last-child)::after {
+    display: none;
+  }
+
+  .van-cell-group {
+    background-color: transparent;
+  }
+  .van-switch {
+    display: block;
+    float: right;
+  }
+  .van-cell__title {
+    flex: 0.8;
+  }
+  .van-cell__value {
+    font-size: 13px;
+    color: #333;
+  }
+}

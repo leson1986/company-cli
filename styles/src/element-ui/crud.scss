@@ -1,0 +1,312 @@
+$color-blue: #2196f3;
+$space-width: 15px;
+.avue-crud {
+  .el-checkbox:last-of-type {
+    margin-right: 0px;
+  }
+  &__menu {
+    display: flex;
+    justify-content: space-between;
+    position: relative;
+    width: 100%;
+    min-height: 40px;
+    height: auto;
+    overflow: hidden;
+    margin-bottom: 5px;
+  }
+  &-search{
+    .el-form-item{
+      margin-bottom: 10px !important;
+    }
+    &__menu {
+      display: flex;
+      align-items: center;
+      height: 40px;
+    }
+  }
+  .el-table--mini{
+    .avue-crud__color{
+      width: 20px;
+      height: 20px;
+    }
+    .avue-crud__icon-select{
+      font-size: 22px;
+    }
+  }
+  .el-table--small{
+    .avue-crud__color{
+      width: 30px;
+      height: 30px;
+    }
+    .avue-crud__icon-select{
+      font-size: 22px;
+    }
+  }
+  margin: 0 auto;
+  width: 99%;
+  th {
+    word-break: break-word;
+    color: #363758;
+    background-color: #DADBEC;
+  }
+  .ms-tree-title{
+      padding-left: 10px;
+  }
+  .ms-tree-space {
+      position: relative;
+      top: 1px;
+      display: inline-block;
+      font-style: normal;
+      font-weight: 400;
+      line-height: 1;
+      width: $space-width;
+      height: 14px;
+      &::before {
+          content: "";
+      }
+  }
+  .processContainer {
+      width: 100%;
+      height: 100%;
+  }
+  table td {
+      line-height: 26px;
+  }
+  .tree-ctrl {
+      position: relative;
+      cursor: pointer;
+      color:#666;
+      margin-left: -$space-width;
+      display: inline-block;
+      width: 17px;
+      height: 17px;
+      text-align: center;
+      line-height: 14px;
+      border: 1px solid #e8e8e8;
+      user-select: none;
+      background: #fff;
+      font-size: 10px;
+      i{
+        padding-top: 3px;
+      }
+  }
+  @keyframes treeTableShow {
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
+  @-webkit-keyframes treeTableShow {
+      from {
+          opacity: 0;
+      }
+      to {
+          opacity: 1;
+      }
+  }
+  &--indeterminate{
+    .is-indeterminate{
+      .el-checkbox__inner {
+        background-color: #fff;
+        border-color: #dcdfe6;
+      }
+    }
+  }
+  .el-table th {
+    word-break: break-word;
+    color: #363758;
+    background-color: #DADBEC;
+  }
+  .el-table thead.is-group th {
+    color: #363758;
+    background-color: #DADBEC;
+  }
+  &__color{
+    width: 40px;
+    height: 40px;
+    border-radius: 5px;
+    display: block;
+  }
+  &__icon-select{
+    font-size: 28px;
+  }
+  &__sortable{
+    opacity: 0.2;
+  }
+  &__drag-handler{
+    cursor: pointer;
+  }
+  &__pagination {
+    position: relative;
+    height: 25px;
+    margin-top: 15px;
+    margin-bottom: 10px;
+    padding: 10px 20px;
+    .el-pagination {
+      position: absolute;
+      right: 0;
+    }
+    .el-pagination.is-background .btn-next, 
+    .el-pagination.is-background .btn-prev, 
+    .el-pagination.is-background .el-pager li {
+      background-color: #ffffff;
+      border: 1px solid #f4f4f5;
+    }
+  }
+  &__form {
+    padding: 0 8px;
+  }
+  &__empty{
+    // lsc: 空数据 
+    padding:  10px 0 0 0;
+  }
+  &__header {
+    margin-bottom: 10px;
+    & > .el-button {
+      padding: 12px 25px;
+    }
+  }
+  &__title {
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.85);
+      margin: 15px 0;
+      display: flex;
+      align-items: center;
+      height: 50px;
+      line-height: 50px;
+      box-sizing: border-box;
+      border-bottom: 2px solid #484DAD;
+  }
+  &__title:first-child {
+    margin-top: 0px;
+  }
+  &__tip{
+    margin:8px 0;
+    display: flex;
+    align-items: center;
+    font-size: 12px;
+    &-name{
+      margin-right: 10px;
+    }
+    &-count{
+      font-size: 16px;
+      font-weight: 600;
+    }
+    .el-button{
+      margin-bottom: 0;
+    }
+  }
+  &__filter {
+    &-item {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    &-menu {
+      padding: 0 38px;
+      margin-bottom: 20px;
+    }
+    &-label {
+      margin: 0 5px;
+      width: 120px !important;
+    }
+    &-symbol {
+      margin: 0 5px;
+      width: 80px !important;
+    }
+    &-value {
+      margin: 0 5px;
+      width: 150px !important;
+    }
+    &-icon {
+      margin-left: 10px;
+    }
+  }
+  &__dialog {
+    .el-scrollbar__wrap{
+      overflow-x: hidden;
+    }
+    .el-dialog {
+      border-radius: 5px;
+    }
+    // .el-dialog__header {
+    //   border-top-left-radius: 5px;
+    //   border-top-right-radius: 5px;
+    //   padding: 12px 20px;
+    //   background-color: #409eff;
+    // }
+    // .el-dialog__close {
+    //   color: #fff;
+    //   font-size: 18px;
+    //   &:hover {
+    //     color: #ffddff;
+    //   }
+    // }
+    // .el-dialog__title {
+    //   color: #fff;
+    //   font-size: 16px;
+    // }
+    // .el-dialog__headerbtn {
+    //   top: 16px;
+    // }
+  }
+  .el-table--striped .el-table__body tr.el-table__row--striped td {
+    background: #F7F7FA;
+  }
+}
+
+.avue-input{
+  &__content{
+    position: relative;
+  }
+  &__tree{
+    padding: 3px 5px;
+    border: 1px solid #e4e7ed;
+    border-radius: 4px;
+    background-color: #fff;
+    box-shadow: 0 2px 12px 0 rgba(0,0,0,.1);
+    box-sizing: border-box;
+    margin: 5px 0;
+    min-width: 240px;
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+    min-width: 150px;
+    max-height: 250px;
+    background-color: #fff;
+    position: fixed;
+    z-index:2001;
+  }
+  &__arrow{
+    top:-6px;
+    left:35px;
+    position: absolute;
+    display: block;
+    width: 0;
+    height: 0;
+    border-color: transparent;
+    border-style: solid;
+    margin-right: 3px;
+    border-width: 6px;
+    border-top-width: 0;
+    border-bottom-color: #ebeef5;
+    &::after{
+      content: " ";
+      top:1px;
+      left:0;
+      position: absolute;
+      display: block;
+      width: 0;
+      height: 0;
+      border-color: transparent;
+      border-style: solid;
+      margin-left: -6px;
+      border-width: 6px;
+      border-top-width: 0;
+      border-bottom-color: #fff;
+    }
+  }
+}

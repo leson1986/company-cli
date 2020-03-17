@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <link rel="stylesheet" href="../../../lib/cdn/element-ui/2.11.1/theme-chalk/index.css" />
+  <script src="../../../lib/cdn/element-ui/2.11.1/index.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <avue-form :option="option" v-model="obj"></avue-form>
+  </div>
+</body>
+<script>
+  let baseUrl = 'https://cli2.avuejs.com/api/area'
+  var DIC = {
+      VAILD: [{
+          label: '真',
+          value: 'true'
+      }, {
+          label: '假',
+          value: 'false'
+      }],
+      SEX: [{
+          disabled: false,
+          label: '男',
+          value: 0
+      }, {
+          disabled: false,
+          label: '女',
+          value: 1
+      }]
+  }
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        obj: {},
+        option: {
+          labelWidth: 250,
+          column: [{
+                  label: "基础用法",
+                  prop: "base",
+                  span: 24,
+                  type: "radio",
+                  dicData: DIC.SEX,
+                  valueDefault: 0
+              },{
+                  label: "禁用状态",
+                  prop: "status",
+                  span: 24,
+                  type: "radio",
+                  disabled: true,
+                  dicData: DIC.SEX,
+                  valueDefault: 1
+              },{
+                label: "按钮样式(实心)",
+                prop: "btn",
+                type: "radio",
+                button: true,
+                size: "small",
+                span: 12,
+                dicData: DIC.SEX,
+                valueDefault: 1
+            },{
+                label: "按钮样式(实心)",
+                prop: "btn",
+                type: "radio",
+                button: true,
+                size: "small",
+                span: 12,
+                dicData: DIC.SEX,
+                valueDefault: 1
+            },{
+                label: "按钮样式(实心)",
+                prop: "btn",
+                type: "radio",
+                button: true,
+                size:"mini",
+                span: 12,
+                dicData: DIC.SEX,
+                valueDefault: 1
+            },{
+                label: "按钮样式(空心)",
+                prop: "border",
+                type: "radio",
+                border: true,
+                span: 12,
+                dicData: DIC.SEX,
+                valueDefault: 0
+            },{
+                label: "可清空",
+                prop: "clear",
+                clearable: true,
+                span: 24
+            },
+          ]
+        }
+      }
+    },
+  })
+</script>
+
+</html>

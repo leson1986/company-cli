@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+
+<html class="no-js">
+
+<head>
+  <meta charset="utf-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+  <title></title>
+  <meta name="description" content="" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <script src="https://cdn.bootcss.com/axios/0.19.0-beta.1/axios.js"></script>
+
+  <script src="https://cdn.bootcss.com/vue/2.5.17/vue.js"></script>
+  <!-- 导入表格需要的包 -->
+
+  <script src="https://cdn.bootcss.com/FileSaver.js/2014-11-29/FileSaver.min.js"></script>
+  <script src="https://cdn.bootcss.com/xlsx/0.14.1/xlsx.full.min.js"></script>
+
+  <link rel="stylesheet" href="../../../lib/cdn/element-ui/2.11.1/theme-chalk/index.css" />
+  <script src="../../../lib/cdn/element-ui/2.11.1/index.js"></script>
+  <link rel="stylesheet" href="../../../lib/index.css" />
+  <script src="../../../lib/avue.js"></script>
+</head>
+
+<body>
+  <div id="app">
+    <section id="test" class="test">
+        <avue-crud ref="crud" :option="option" :data="data" :table-loading="loading" v-model="obj" @on-load="onLoad"
+          @row-update="rowUpdate" @row-del="rowDel">
+          <template slot="menuLeft" slot-scope="scope">
+            <el-button @click="addRow" size="small">添加10条</el-button>
+            <el-button size="small" @click="printJS">打印测试</el-button>
+          </template>
+        </avue-crud>
+        <h1>Print.js Test Page</h1>
+        <p>
+          <button onClick='printPdf();'>
+            Print PDF
+          </button>
+          <button onClick='printPdfWithModal();'>
+            Print PDF with Loading Modal
+          </button>
+          <button onClick='printPdfWithModalAndCloseCallback();'>
+            Print PDF with Loading Modal and close callback
+          </button>
+          <button onClick='printPdfCompatibleBrowser();'>
+            Print PDF only on compatible browser
+          </button>
+          <button onClick='printPdfBase64();'>
+            Print base64 PDF
+          </button>
+        </p>
+        <p>
+          <button onClick='printHtml();'>
+            Print HTML
+          </button>
+          <button onClick='printHtmlCustomStyle();'>
+            Print HTML with custom style
+          </button>
+          <button onClick='printHtmlCss();'>
+            Print HTML with custom css
+          </button>
+          <button onClick='printRawHtml();'>
+            Print Raw HTML
+          </button>
+        </p>
+        <p>
+          <button onClick='printJson();'>
+            Print JSON
+          </button>
+          <button onClick='printStyledJson();'>
+            Print Styled JSON
+          </button>
+          <button onClick='printNestedJson();'>
+            Print Nested JSON
+          </button>
+        </p>
+        <p>
+          <button onClick='printImage();'>
+            Print Image
+          </button>
+          <button onClick='printImages();'>
+            Print Multiple Images
+          </button>
+          <button onClick='printStyledImages();'>
+            Print Multiple Images Passing Custom Style
+          </button>
+          <button onClick='printStyledImagesWithStyleSheet();'>
+            Print Multiple Images Passing a Style Sheet
+          </button>
+          <button onClick='printExternalImages();'>
+            Print Multiple External Images
+          </button>
+        </p>
+        <div>
+          <h2>Form Elements</h2>
+          <div>
+            <input type="checkbox" /> Checkbox Example
+          </div>
+          <div>
+              <input type="text" value="Styled text input content..." style="color: red; min-width: 300px;" />
+          </div>
+          <div>
+              <textarea>Text area content...</textarea>
+          </div>
+          <div>
+              <canvas id="myCanvas" width="200" height="50"
+              style="border:2px solid blue;">
+              Your browser does not support the canvas element.
+              </canvas>
+  
+              <script>
+                var canvas = document.getElementById("myCanvas");
+                var ctx = canvas.getContext("2d");
+                ctx.fillStyle = "#FF0000";
+                ctx.fillRect(0,0,150,25);
+              </script>
+          </div>
+          <div>
+            <select>
+              <option value="super" selected>Super</option>
+              <option value="test">Test</option>
+              <option value="printjs">Print.js</option>
+            </select>
+          </div>
+        </div>
+      </section>
+  </div>
+</body>
+<script>
+  function printPdf() {
+      printJS('/test/manual/test.pdf')
+    }
+    function printPdfWithModal() {
+      printJS({
+        printable: '/test/manual/test.pdf',
+        type: 'pdf',
+        showModal: true
+      })
+    }
+    
+    function printPdfWithModalAndCloseCallback() {
+      printJS({
+        printable: '/test/manual/test.pdf',
+        type: 'pdf',
+        showModal: true,
+        onPrintDialogClose: () => console.log('The print dialog was closed'),
+        onPdfOpen: () => console.log('Pdf was opened in a new tab due to an incompatible browser')
+      })
+    }
+    function printPdfCompatibleBrowser() {
+      printJS({
+        printable: '/test/manual/test.pdf',
+        type: 'pdf',
+        onBrowserIncompatible: () => {
+          alert('Browser incompatible')
+          return false
+        }
+      })
+    }
+    function printPdfBase64() {
+      fetch('/test/manual/base64.txt').then(function(response) {
+        response.text().then(function(base64) {
+          printJS({
+            printable: base64,
+            type: 'pdf',
+            base64: true
+          })
+        })
+      })
+    }
+    function printHtml() {
+      printJS({
+        printable: 'test',
+        type: 'html'
+      })
+    }
+    function printRawHtml() {
+      printJS({
+        printable: `<h1>Print.js Raw HTML Print Test</h1>
+        <p class="blueText">Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        <p>sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>`,
+        type: 'raw-html',
+        style: '.blueText {color:blue;}'
+      })
+    }
+    function printHtmlCustomStyle() {
+      const style = '@page { margin-top: 400px } @media print { h1 { color: blue } }'
+      printJS({
+        printable: 'test',
+        type: 'html',
+        style: style,
+        scanStyles: false
+      })
+    }
+    function printHtmlCss() {
+      printJS({
+        printable: 'test',
+        type: 'html',
+        css: '../../../lib/cdn/element-ui/2.11.1/theme-chalk/index.css',
+        scanStyles: false
+      })
+    }
+    function printJson() {
+      let data = []
+      for (let i=0; i <= 1000; i++) {
+        data.push({
+          test1: createRandomString(),
+          test2: createRandomString()
+        })
+      }
+      printJS({
+        printable: data,
+        properties: [
+          {
+            field: 'test1',
+            displayName: 'test 1',
+            columnSize: 1
+          },
+          {
+            field: 'test2',
+            displayName: 'test 2',
+            columnSize: 4
+          }
+        ],
+        type: 'json',
+        header: 'JSON Print Test'
+      })
+    }
+    function printStyledJson() {
+      let data = [
+        {
+          test1: 'Test1 string',
+          test2: 'Test2 string'
+        },
+        {
+          test1: 'more Test1 string',
+          test2: 'more Test2 string'
+        }
+      ]
+      printJS({
+        printable: data,
+        properties: ['test1', 'test2'],
+        type: 'json',
+        gridStyle: 'border: 2px solid #3971A5;',
+        gridHeaderStyle: 'color: red;  border: 2px solid #3971A5;'
+      })
+    }
+    function printNestedJson() {
+      let data = []
+      for (let i=0; i <= 100; i++) {
+        data.push({
+          test1: createRandomString(),
+          test2: {
+            a: createRandomString()
+          }
+        })
+      }
+      printJS({
+        printable: data,
+        properties: [
+          {
+            field: 'test1',
+            displayName: 'test 1',
+            columnSize: 1
+          },
+          {
+            field: 'test2.a',
+            displayName: 'test 2 - a',
+            columnSize: 4
+          }
+        ],
+        type: 'json'
+      })
+    }
+    function createRandomString() {
+      var text = "";
+      var possible = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789";
+      for (var i = 0; i < 5; i++)
+        text += possible.charAt(Math.floor(Math.random() * possible.length));
+      return text;
+    }
+    function printImage() {
+      printJS('test-01.jpg', 'image')
+    }
+    function printImages() {
+      printJS({
+        printable: [
+          'test-01.jpg',
+          'test-02.jpg'
+        ],
+        type: 'image'
+      })
+    }
+    function printStyledImages() {
+      printJS({
+        printable: [
+          'test-01.jpg',
+          'test-02.jpg'
+        ],
+        type: 'image',
+        style: 'img { max-width: 400px; margin: 30px; }'
+      })
+    }
+    function printStyledImagesWithStyleSheet() {
+      printJS({
+        printable: [
+          'test-01.jpg',
+          'test-02.jpg'
+        ],
+        type: 'image',
+        css: 'test.css',
+      })
+    }
+    function printExternalImages() {
+      printJS({
+        printable: [
+          'https://printjs.crabbly.com/images/print-01-highres.jpg',
+          'https://printjs.crabbly.com/images/print-02-highres.jpg',
+          'https://printjs.crabbly.com/images/print-03-highres.jpg'
+        ],
+        type: 'image',
+        showModal: true,
+        modalMessage: 'Printing...'
+      })
+    }
+
+  let baseUrl = 'https://cli2.avuejs.com/api/area'
+  new Vue({
+    el: '#app',
+    data() {
+      return {
+        loading: true,
+        obj: {},
+        option: {
+          menuAlign: 'left',
+          size: 'small',
+          border: true,
+          align: 'center',
+          viewBtn: false,
+          cellBtn: true,
+          editBtn: false,
+          addBtn: false,
+          addRowBtn: true,
+          printBtn: true,
+          excelBtn: true,
+          refreshBtn: false,
+          columnBtn: false,
+          filterBtn: false,
+          menuWidth: 180,
+          keyId: 'id', //行编辑的主键，默认为id
+          index: true,
+          column: [
+            {
+              width: 120,
+              label: '姓名',
+              prop: 'name',
+              type: 'select',
+              fixed: 'left',
+              formslot: true,
+              cell: true,
+              rules: [
+                {
+                  required: true,
+                  message: '请输入姓名',
+                  trigger: 'blur'
+                }
+              ],
+              dicData: [
+                {
+                  label: 'smallwei',
+                  value: '0'
+                },
+                {
+                  label: 'lengleng',
+                  value: '1'
+                }
+              ],
+              tipPlacement: 'bottom',
+              tip: '自定义内容'
+            },
+            {
+              width: 120,
+              label: '省份',
+              prop: 'province',
+              type: 'select',
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              cell: true,
+              cascaderItem: ['city', 'area'],
+              dicUrl: `${baseUrl}/getProvince`,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择省份',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              width: 120,
+              label: '城市',
+              prop: 'city',
+              type: 'select',
+              cell: true,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              dicFlag: false,
+              dicUrl: `${baseUrl}/getCity/{{key}}`,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择城市',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              width: 120,
+              label: '地区',
+              prop: 'area',
+              dicFlag: false,
+              cell: true,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              type: 'select',
+              dicUrl: `${baseUrl}/getArea/{{key}}`,
+              rules: [
+                {
+                  required: true,
+                  message: '请选择地区',
+                  trigger: 'blur'
+                }
+              ]
+            },
+            {
+              label: '网络字典',
+              prop: 'dic',
+              width: 120,
+              type: 'select',
+              cell: true,
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              dicUrl: 'https://cli2.avuejs.com/api/area/getProvince'
+            },
+            {
+              width: 120,
+              label: '开关',
+              prop: 'switch',
+              type: 'switch',
+              cell: true,
+              dicData: [
+                {
+                  label: '开启',
+                  value: 0
+                },
+                {
+                  label: '关闭',
+                  value: 1
+                }
+              ]
+            },
+            {
+              width: 180,
+              label: '日期',
+              prop: 'date',
+              type: "date",
+              format: "yyyy-MM-dd",
+              cell: true
+            },
+            {
+              width: 180,
+              label: '日期',
+              prop: 'datetime',
+              type: "datetime",
+              format: "yyyy-MM-dd hh:mm:ss",
+              cell: true
+            }, {
+              label: '地址',
+              prop: 'textarea',
+              cell: true,
+            }, {
+              label: '远程搜索',
+              prop: 'select',
+              remote: true,
+              type: 'select',
+              props: {
+                label: 'name',
+                value: 'code'
+              },
+              dicUrl: 'https://cli2.avuejs.com/api/area/getProvince/{{key}}',
+              cell: true,
+            }, {
+              label: '开关1',
+              prop: 'switch1',
+              cell: true,
+              type: 'switch'
+            }, {
+              label: '开关2',
+              prop: 'switch2',
+              cell: true,
+              type: 'switch',
+              displayAs: 'switch'
+            }
+          ]
+        },
+        data: []
+      }
+    },
+    created() {
+      setTimeout(() => {
+        this.loading = false
+      }, 1000)
+    },
+    methods: {
+      addRow() {
+        this.$message.success('正在添加，请稍后')
+        setTimeout(() => {
+          for (let i = 0; i < 10; i++) {
+            this.$refs.crud.rowCellAdd({
+              name: '0',
+            });
+          }
+        }, 500)
+      },
+      rowSave(form, done, loading) {
+        this.$message.success('模拟网络请求')
+        setTimeout(() => {
+          this.$message.success('关闭按钮等待')
+          loading()
+        }, 1000)
+        setTimeout(() => {
+          this.$message.success('新增数据' + JSON.stringify(form))
+          done()
+        }, 2000)
+      },
+      refresh(val) {
+        this.$message.success('刷新回调,当前分页对象' + JSON.stringify(val))
+      },
+      rowDel(form, index) {
+        this.$confirm(`此操作将永久删除序号${index + 1}, 是否继续?`, '提示', {
+          type: 'warning'
+        }).then(() => {
+          this.data.splice(index, 1);
+          this.$message.success('删除数据' + JSON.stringify(form))
+        })
+      },
+      rowUpdate(form, index, done, loading) {
+        this.$message.success('模拟网络请求')
+        setTimeout(() => {
+          this.$message.success('关闭按钮等待')
+          loading()
+        }, 1000)
+        setTimeout(() => {
+          this.$message.success(
+            '编辑数据' + JSON.stringify(form) + '数据序号' + index
+          )
+          done()
+        }, 2000)
+      },
+      onLoad(page, params) {
+        this.page = page
+        const data = [
+          {
+            id: '0',
+            img:
+              'https://gitee.com/smallweigit/avue/badge/star.svg?theme=white',
+            img1: [
+              {
+                label: 'test',
+                value:
+                  'http://pic.soutu123.com/back_pic/18/07/06/514e96eedb99a663e02ab32614713243.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+              },
+              {
+                label: 'test',
+                value:
+                  'http://pic.soutu123.com/back_pic/18/07/06/514e96eedb99a663e02ab32614713243.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+              },
+              {
+                label: 'test',
+                value:
+                  'http://pic.soutu123.com/back_pic/18/09/18/0ca02eb9c35f095481196354a1f455c8.jpg!/fw/700/quality/90/unsharp/true/compress/true'
+              }
+            ],
+            name: '0',
+            dic: '110000',
+            switch: 0,
+            sum: 5,
+            avg: 10,
+            count: 2,
+            province: '110000',
+            city: '110100',
+            area: '110101',
+            datetime: '2019-01-01 00:00:00',
+            date: '2019-01-01',
+            switch1: true,
+            switch2: true
+          },
+          {
+            id: '1',
+            name: '1',
+            dic: '120000',
+            img: 'https://gitee.com/log4j/pig/badge/star.svg?theme=white',
+            switch: 1,
+            sum: 15,
+            avg: 20,
+            count: 1,
+            province: '130000',
+            city: '130200',
+            area: '130202',
+            datetime: '2019-01-01 00:00:00',
+            date: '2019-01-01',
+            switch1: false,
+            switch2: false
+          },
+          {
+            id: '2',
+            name: '1',
+            dic: '110000',
+            switch: 0,
+            sum: 15,
+            avg: 20,
+            count: 1,
+            province: '110000',
+            city: '110100',
+            area: '110101',
+            datetime: '2019-01-01 00:00:00',
+            date: '2019-01-01',
+            $cellEdit:true,
+            switch1: true,
+            switch2: false
+          }
+        ]
+        this.data = data
+      },
+      printJS() {
+        const style = '@page { margin: 0 } @media print {  }'//自定义样式
+        printJS({
+          printable: 'app',//要打印内容的id
+          type: 'html',
+          style: style,
+          scanStyles: true
+        })
+      }
+    }
+  })
+</script>
+
+</html>
