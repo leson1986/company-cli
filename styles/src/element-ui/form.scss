@@ -42,9 +42,27 @@
     }
 
     .el-input.is-disabled .el-input__inner {
-      background-color: #EBEEF5;
-      border-color: #C8C5D9;
-      color: #858CAA;
+      // background-color: #EBEEF5;
+      // border-color: #C8C5D9;
+      // color: #858CAA;
+      background-color: transparent;
+      border-color: transparent;
+      color: #363758;
+    }
+    .el-input.is-disabled .el-input__inner:hover,
+    .el-select .el-input.is-focus .el-input__inner {
+      border-color: transparent;
+    }
+    .el-input.is-disabled .el-input__icon,
+    .el-input-number.is-disabled .el-icon-arrow-up,
+    .el-input-number.is-disabled .el-icon-arrow-down {
+      font-size: 0;
+    }
+    .el-input-number.is-disabled .el-input__inner {
+      text-align: left;
+    }
+    .el-input.lsc-avue--input .el-input__inner:disabled {
+      border: 0;
     }
   }
   &__line {

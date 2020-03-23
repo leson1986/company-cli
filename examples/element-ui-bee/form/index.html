@@ -22,7 +22,12 @@
     {{obj}}
     <avue-form :option="option" v-model="obj" @submit="submit">
       <template slot-scope="scope" slot="name">
-        <avue-input :disabled="scope.disabled" :label="scope.column.label" v-model="obj.name"></avue-input>
+        <!-- <avue-input :disabled="scope.disabled"  :label="scope.column.label" v-model="obj.name"></avue-input> -->
+        <el-input
+          placeholder="请输入内容"
+          v-model="obj.name"
+          :disabled="true">
+        </el-input>
       </template>
       <template slot-scope="scope" slot="test">
         <el-tag>测试自定义内容</el-tag>
@@ -49,6 +54,8 @@
           {
             label: '姓名',
             prop: 'name',
+            disabled: true,
+            readonly: true,
             formslot: true,
             rules: [
               {
@@ -60,6 +67,7 @@
           }, {
             label: '级别',
             prop: 'cascader',
+            disabled: false,
             type: 'cascader',
             changeOnSelect: true,
             dicData: [{
@@ -86,6 +94,7 @@
           {
             label: '树型',
             prop: 'tree',
+            disabled: false,
             type: 'tree',
             multiple: true,
             checked: (data) => {
@@ -109,6 +118,7 @@
           {
             width: 120,
             label: '开关',
+            disabled: true,
             prop: 'switch',
             type: 'switch',
             dicData: [
@@ -124,12 +134,14 @@
           },
           {
             label: '默认值',
+            disabled: true,
             prop: 'default',
             valueDefault: '22'
           },
           {
             label: '多选',
             prop: 'selects',
+            disabled: true,
             multiple: true,
             type: 'select',
             dataType: 'number',
@@ -144,6 +156,7 @@
           {
             label: '数字',
             prop: 'number',
+            disabled: true,
             type: 'number',
             minRows: 1,
             rules: [
@@ -157,6 +170,7 @@
           {
             label: '省份',
             prop: 'province',
+            disabled: true,
             type: 'select',
             props: {
               label: 'name',
@@ -176,6 +190,7 @@
           {
             label: '城市',
             prop: 'city',
+            disabled: true,
             type: 'select',
             props: {
               label: 'name',

@@ -88,7 +88,7 @@
              :upload-after="uploadAfter"
              :value-format="column.valueFormat"
              :voidIconClass="column.voidIconClass"
-             :remote="column.remote"
+             :remote="column.remote || disabled"
              :autocomplete="column.autocomplete"
              v-model="text"
              :allow-create="column.allowCreate"
