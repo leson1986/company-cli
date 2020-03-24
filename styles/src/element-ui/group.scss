@@ -1,4 +1,6 @@
 .avue-group{
+  margin: 0 auto;
+  width: 99%;
   &--card{
     padding: 0 20px;
     &:last-child{
@@ -11,7 +13,7 @@
   }
   &__item {
     margin-bottom: 20px;
-    padding: 0 20px 0 20px;
+    // padding: 0 20px 0 20px;
     // background-color: #fff;
     border-bottom: 1px solid #eee;
     border-radius: 5px;
@@ -28,16 +30,19 @@
     height: 50px;
     line-height: 50px;
     box-sizing: border-box;
-    border-bottom:2px solid #484DAD;
+    border-bottom: 1px solid #E8E8E8;
+    color: #0069FF;
 }
   &__icon {
       margin-right: 8px;
       font-size: 20px;
   }
   &__title {
-      font-size: 16px;
-      font-weight: 500;
-      color: rgba(0, 0, 0, 0.85);
+    border-bottom: 3px solid #0069FF;
+    bottom: 2px;
+    position: relative;
+    padding: 0 5px;
+    font-size: 16px;
   }
 }
 .lsc_all_title {

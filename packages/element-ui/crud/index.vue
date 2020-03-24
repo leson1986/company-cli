@@ -2,7 +2,7 @@
   <div :class="b()">
     <!-- 头部组件 -->
     <header-title ref="headerTitle"
-                  v-show="vaildData(tableOption.header,true)"></header-title>
+                  v-show="vaildData(tableOption.title,true)"></header-title>
     <!-- 搜索组件 -->
     <header-search v-model="searchForm"
                    ref="headerSearch">

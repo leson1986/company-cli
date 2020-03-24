@@ -170,14 +170,21 @@ $space-width: 15px;
   }
   &__title {
       font-size: 16px;
-      color: rgba(0, 0, 0, 0.85);
+      color: #0069FF;
       margin: 15px 0;
       display: flex;
       align-items: center;
       height: 50px;
       line-height: 50px;
       box-sizing: border-box;
-      border-bottom: 2px solid #484DAD;
+      border-bottom: 1px solid #E8E8E8;
+      
+      p {
+        border-bottom: 3px solid #0069FF;
+        bottom: 2px;
+        position: relative;
+        padding: 0 5px;
+      }
   }
   &__title:first-child {
     margin-top: 0px;

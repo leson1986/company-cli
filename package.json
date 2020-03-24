@@ -81,6 +81,8 @@
     "dayjs": "^1.7.8",
     "deepmerge": "^3.1.0",
     "element-ui": "^2.11.0",
+    "graceful-fs": "^4.2.3",
+    "natives": "^1.1.6",
     "nprogress": "^0.2.0",
     "print-js": "^1.0.61",
     "vant": "^1.4.8",

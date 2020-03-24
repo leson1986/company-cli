@@ -11,8 +11,8 @@
            v-else-if="label || icon">
         <i :class="[icon,b('icon')]"
            v-if="icon"></i>
-        <h1 :class="b('title')"
-            v-if="label">{{label}}</h1>
+        <p :class="b('title')"
+            v-if="label">{{label}}</p>
 
       </div>
 
